@@ -30,7 +30,7 @@
             <plugin>
                 <groupId>com.microsoft.azure</groupId>
                 <artifactId>azure-functions-maven-plugin</artifactId>
-                <version>1.38.0</version>
+                <version>1.36.0</version>
                 <configuration>
                     <appName>local-function-app</appName>
                     <runtime>
@@ -38,23 +38,7 @@
                         <javaVersion>Java 21</javaVersion>
                     </runtime>
                 </configuration>
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>package-functions</id>-->
-<!--                        <phase>package</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>package</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                    <execution>-->
-<!--                        <id>run-functions</id>-->
-<!--                        <goals>-->
-<!--                            <goal>run</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
             </plugin>
-
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
