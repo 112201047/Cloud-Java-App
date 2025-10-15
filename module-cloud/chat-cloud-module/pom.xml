@@ -24,7 +24,7 @@
                 <artifactId>azure-functions-maven-plugin</artifactId>
                 <version>1.18.0</version>
                 <configuration>
-                    <appName>chat-function-app</appName>
+                    <appName>chat-cloud-function-app</appName>
                     <resourceGroup>rg-module-cloud</resourceGroup>
                     <region>centralindia</region>
                     <runtime>
