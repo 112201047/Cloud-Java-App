@@ -12,7 +12,12 @@
     </parent>
 
     <artifactId>module-cloud</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
+    <modules>
+        <module>chat-cloud-module</module>
+        <module>canvas-cloud-module</module>
+        <module>controller-cloud-module</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
