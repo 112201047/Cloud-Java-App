@@ -1,6 +1,7 @@
 package functionapps;
 
 import java.util.Optional;
+import java.util.List;
 import com.microsoft.azure.functions.ExecutionContext;
 import com.microsoft.azure.functions.HttpMethod;
 import com.microsoft.azure.functions.HttpRequestMessage;
@@ -10,29 +11,30 @@ import com.microsoft.azure.functions.annotation.AuthorizationLevel;
 import com.microsoft.azure.functions.annotation.FunctionName;
 import com.microsoft.azure.functions.annotation.HttpTrigger;
 
-import models.ChatNewResponse;
-import models.ChatNewRequest;
+import models.ChatLoadResponse;
+import models.ChatLoadRequest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import models.ChatMessageDTO;
 
 /**
- * Azure Functions to create new chat.
- * Takes ChatNewRequest as input and returns ChatNewResponse as output
+ * Azure Functions to load a chat.
+ * Takes ChatLoadRequest as input and returns ChatLoadResponse as output
  */
-public class NewChat {
+public class LoadChat {
     /**
      * Jackson ObjectMapper instance used for JSON serialization/deserialization.
      */
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
-     * HTTP-triggered Azure Function for creating a chat.
+     * HTTP-triggered Azure Function for loading a chat.
      *
-     * @param request The HTTP request message containing JSON body of type ChatNewRequest.
+     * @param request The HTTP request message containing JSON body of type ChatLoadRequest.
      * @param context The execution context of the function.
-     * @return HttpResponseMessage containing JSON serialized ChatNewResponse.
+     * @return HttpResponseMessage containing JSON serialized ChatLoadResponse.
      */
-    @FunctionName("NewChat")
+    @FunctionName("LoadChat")
     public HttpResponseMessage run(
             @HttpTrigger(
                     name = "req",
@@ -44,19 +46,20 @@ public class NewChat {
 
         try {
             final String jsonBody = request.getBody().orElse("");
-            final ChatNewRequest chatNewRequest = objectMapper.readValue(jsonBody, ChatNewRequest.class);
+            final ChatLoadRequest chatLoadRequest = objectMapper.readValue(jsonBody, ChatLoadRequest.class);
 
             context.getLogger().info("Storing JSON Object in CosmoDB");
             // Implementation to be done.
+            final List<ChatMessageDTO> chatMessages = List.of(new ChatMessageDTO("Test1", "Test Messages", "Test Attachments", chatLoadRequest.fromTimestamp()));
             context.getLogger().info("Stored JSON Object in CosmoDB");
 
-            final ChatNewResponse chatNewResponse = new ChatNewResponse(true, "Success");
+            final ChatLoadResponse chatLoadResponse = new ChatLoadResponse(true, chatMessages, "Success");
             return request.createResponseBuilder(HttpStatus.OK)
-                    .body(objectMapper.writeValueAsString(chatNewResponse))
+                    .body(objectMapper.writeValueAsString(chatLoadResponse))
                     .header("Content-Type", "application/json")
                     .build();
         } catch (Exception e) {
-            final ChatNewResponse errorResponse = new ChatNewResponse(false, "Invalid request");
+            final ChatLoadResponse errorResponse = new ChatLoadResponse(false, List.of(), "Success");
             try {
                 return request.createResponseBuilder(HttpStatus.BAD_REQUEST)
                         .body(objectMapper.writeValueAsString(errorResponse))
